@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const fs = require('fs');
+const tokens = require('./tokens.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -9,4 +9,4 @@ client.events = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
-client.login('ODQ1NDQxNzIyNTQzNzY3NTcz.YKhA9g.s5gZWdORDr73FPFpZQOMnxlFvlk');
+client.login(tokens.botKey);
