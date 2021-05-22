@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const tokens = require('./tokens.js');
+require('dotenv').config();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -9,4 +9,4 @@ client.events = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
-client.login(tokens.botKey);
+client.login(process.env.DISCORD_TOKEN);
