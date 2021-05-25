@@ -3,7 +3,7 @@ const Distube = require('distube');
 require('dotenv').config();
 
 const client = new Discord.Client();
-client.distube = new Distube(client, { searchSongs: true, emitNewSongOnly: true });
+client.distube = new Distube(client, { searchSongs: true, emitNewSongOnly: true, highWaterMark: 1<<25 });
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 

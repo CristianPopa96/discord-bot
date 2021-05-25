@@ -1,11 +1,11 @@
 module.exports = {
     name: 'play',
-    aliases: ['skip', 'stop', 'repeat', 'loop', 'queue', '3d', 'bassboost', 'echo', 'karaoke', 'nightcore', 'vaporwave'],
+    aliases: ['p', 'skip', 'stop', 'repeat', 'loop', 'queue', '3d', 'bassboost', 'echo', 'karaoke', 'nightcore', 'vaporwave'],
     cooldown: 0,
     description: 'Advanced music bot',
     async execute(message, args, cmd, client, Discord) {
 
-        if (cmd == "play")
+        if (cmd == "play" || cmd == "p")
             client.distube.play(message, args.join(" "));
 
         if (["repeat", "loop"].includes(cmd))
