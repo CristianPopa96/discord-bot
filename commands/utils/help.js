@@ -1,6 +1,7 @@
 module.exports = {
     name: 'help',
     aliases: ['h', 'ajutor'],
+    permissions: [],
     cooldown: 0,
     description: 'Help command',
     execute(message, arg, cmd, client, Discord) {
