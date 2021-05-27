@@ -6,7 +6,7 @@ module.exports = (Discord, client, message) => {
     const prefix = process.env.PREFIX;
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
-    if (![process.env.COMMANDS_CHANNEL_ID].includes(message.channel.name) && false) {
+    if (![process.env.COMMANDS_CHANNEL_ID].includes(message.channel.name)) {
         message.reply('ai voie sa scrii comenzi doar pe canalele de text "comenzi".').then(msg => {
             setTimeout(() => {
                 msg.delete();

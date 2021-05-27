@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const client = new Discord.Client();
 client.distube = new Distube(client, { searchSongs: true, emitNewSongOnly: true, highWaterMark: 1<<25 });
+client.voiceChannel = null;
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 
@@ -14,9 +15,10 @@ client.events = new Discord.Collection();
 const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 
 client.distube
-    .on("playSong", (message, queue, song) => message.channel.send(
-        `Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`
-    ))
+    .on("playSong", (message, queue, song) => {
+        message.channel.send(`Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`);
+        client.voiceChannel = message.member.voice.channel;
+    })
     .on("addSong", (message, queue, song) => message.channel.send(
         `Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`
     ))
