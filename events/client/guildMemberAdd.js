@@ -13,7 +13,4 @@ module.exports = (Discord, client, guildMember) => {
     });
 
     guildMember.send(embed);
-    // guildMember.guild.members.cache.forEach(member => {
-    //     if (member.id != guildMember.id && !member.user.bot) member.send("ANUNT NOU");
-    // });;
 }

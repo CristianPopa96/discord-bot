@@ -6,7 +6,7 @@ module.exports = {
     permissions: [],
     cooldown: 0,
     description: "Generate a poll",
-    execute(message, args, cmd, client, Discord, Distube) {
+    execute(message, args, cmd, client, Discord) {
         const counter = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
         const newArgs = args.join(" ").split("\/");
@@ -25,7 +25,7 @@ module.exports = {
         .setDescription(options);
 
         if (cmd == 'opinie') {
-            client.channels.cache.find(channel => channel.id == process.env.POLL_CHANNEL_ID).send(embed).then(msgReact => {
+            client.channels.cache.get(process.env.POLL_CHANNEL_ID).send(embed).then(msgReact => {
                 for (let i = 0; i < newArgs.length; i++) {
                     msgReact.react(counter[i]);
                 }
