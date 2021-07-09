@@ -6,8 +6,8 @@ module.exports = (Discord, client, message) => {
     const prefix = process.env.PREFIX;
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
-    if (![process.env.COMMANDS_CHANNEL_ID].includes(message.channel.name)) {
-        message.reply('ai voie sa scrii comenzi doar pe canalele de text "comenzi".').then(msg => {
+    if (![process.env.COMMANDS_CHANNEL_ID].includes(message.channel.name) && message.guild != null) {
+        message.reply('ai voie sa scrii comenzi doar pe canalele de text "comenzi" sau printr-un DM.').then(msg => {
             setTimeout(() => {
                 msg.delete();
                 message.delete();
@@ -56,23 +56,20 @@ module.exports = (Discord, client, message) => {
         "MANAGE_EMOJIS",
     ]
     
-    if(command.permissions.length){
-    let invalidPerms = []
-    for(const perm of command.permissions){
-        if(!validPermissions.includes(perm)){
-        return console.log(`permisiuni invalide ${perm}`);
+    if (command.permissions.length) {
+        if (message.guild == null) return message.reply("Comenzile de moderator nu pot fi scrise in privat.");
+        let invalidPerms = [];
+        for (const perm of command.permissions) {
+            if (!validPermissions.includes(perm)) return console.log(`permisiuni invalide ${perm}`);
+            if (!message.member.hasPermission(perm)) invalidPerms.push(perm);
         }
-        if(!message.member.hasPermission(perm)){
-        invalidPerms.push(perm);
+        if (invalidPerms.length) {
+            return message.channel.send(`Iti lipsesc urmatoarele permisiuni: \`${invalidPerms}\``);
         }
-    }
-    if (invalidPerms.length){
-        return message.channel.send(`Iti lipsesc urmatoarele permisiuni: \`${invalidPerms}\``);
-    }
     }
     
     // COOLDOWNS
-    if(!cooldowns.has(command.name)){
+    if (!cooldowns.has(command.name)){
         cooldowns.set(command.name, new Discord.Collection());
     }
 
@@ -80,10 +77,10 @@ module.exports = (Discord, client, message) => {
     const time_stamps = cooldowns.get(command.name);
     const cooldown_amount = (command.cooldown) * 1000;
 
-    if(time_stamps.has(message.author.id)){
+    if (time_stamps.has(message.author.id)){
         const expiration_time = time_stamps.get(message.author.id) + cooldown_amount;
 
-        if(current_time < expiration_time){
+        if (current_time < expiration_time){
             const time_left = (expiration_time - current_time) / 1000;
             return message.reply(`Mai ai de asteptat ${time_left.toFixed(1)} secunde pana ai voie sa folosesti ${command.name}`);
         }
